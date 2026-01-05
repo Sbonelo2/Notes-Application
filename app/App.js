@@ -1,13 +1,12 @@
-import React from "react";
 import AuthProvider from "./context/AuthContext";
 import NotesProvider from "./context/NotesContext";
-import RootNavigator from "./context/navigation/AppNavigator";
+import AppNavigator from "./navigation/AppNavigator";
 
-export default function Index() {
+export default function App() {
   return (
     <AuthProvider>
       <NotesProvider>
-        <RootNavigator />
+        <AppNavigator />
       </NotesProvider>
     </AuthProvider>
   );
