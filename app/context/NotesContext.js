@@ -1,6 +1,6 @@
-import React, { createContext, useState, useEffect } from "react";
-import { saveData, getData } from "../utils/storage";
+import { createContext, useEffect, useState } from "react";
 import uuid from "react-native-uuid";
+import { getData, saveData } from "./utils/storage";
 
 export const NotesContext = createContext();
 

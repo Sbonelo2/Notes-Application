@@ -1,5 +1,5 @@
-import React, { createContext, useState, useEffect } from "react";
-import { saveData, getData, removeData } from "../utils/storage";
+import { createContext, useEffect, useState } from "react";
+import { getData, removeData, saveData } from "./utils/storage";
 
 export const AuthContext = createContext();
 
@@ -10,7 +10,13 @@ export default function AuthProvider({ children }) {
     getData("user").then(setUser);
   }, []);
 
-  const register = async (newUser) => {
+  const register = async (email, username, password) => {
+    const newUser = {
+      email,
+      username,
+      password,
+      createdAt: new Date().toISOString(),
+    };
     await saveData("user", newUser);
     setUser(newUser);
   };
@@ -29,8 +35,19 @@ export default function AuthProvider({ children }) {
     setUser(null);
   };
 
+  const updateProfile = async (email, username, password) => {
+    const updatedUser = {
+      ...user,
+      email,
+      username,
+      ...(password && { password }),
+    };
+    await saveData("user", updatedUser);
+    setUser(updatedUser);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, register, login, logout }}>
+    <AuthContext.Provider value={{ user, register, login, logout, updateProfile }}>
       {children}
     </AuthContext.Provider>
   );

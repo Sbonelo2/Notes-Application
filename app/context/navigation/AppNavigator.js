@@ -1,6 +1,5 @@
-import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../AuthContext";
 
 // note: screens live in ../screen (singular) per your project
@@ -17,22 +16,20 @@ export default function AppNavigator() {
   const { user } = useContext(AuthContext);
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {!user ? (
-          <>
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Register" component={RegisterScreen} />
-          </>
-        ) : (
-          <>
-            <Stack.Screen name="Categories" component={CategoriesScreen} />
-            <Stack.Screen name="Notes" component={NotesScreen} />
-            <Stack.Screen name="AddEditNote" component={AddEditNoteScreen} />
-            <Stack.Screen name="Profile" component={ProfileScreen} />
-          </>
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      {!user ? (
+        <>
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Register" component={RegisterScreen} />
+        </>
+      ) : (
+        <>
+          <Stack.Screen name="Categories" component={CategoriesScreen} />
+          <Stack.Screen name="Notes" component={NotesScreen} />
+          <Stack.Screen name="AddEditNote" component={AddEditNoteScreen} />
+          <Stack.Screen name="Profile" component={ProfileScreen} />
+        </>
+      )}
+    </Stack.Navigator>
   );
 }
