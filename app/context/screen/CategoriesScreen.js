@@ -1,11 +1,11 @@
 import { useContext } from "react";
 import {
-    Alert,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Alert,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { AuthContext } from "../AuthContext";
 
@@ -22,12 +22,8 @@ export default function CategoriesScreen({ navigation }) {
       { text: "Cancel", onPress: () => {} },
       {
         text: "Logout",
-        onPress: async () => {
-          try {
-            await logout();
-          } catch (error) {
-            Alert.alert("Error", "Failed to logout");
-          }
+        onPress: () => {
+          logout();
         },
       },
     ]);
@@ -44,7 +40,7 @@ export default function CategoriesScreen({ navigation }) {
         {categories.map((category) => (
           <TouchableOpacity
             key={category.name}
-            style={[styles.categoryCard, { borderLeftColor: category.color }]}
+            style={styles.categoryCard}
             onPress={() => navigation.navigate("Notes", { category: category.name })}
           >
             <View style={styles.categoryContent}>
@@ -103,6 +99,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     borderLeftWidth: 4,
+    borderLeftColor: "#fff",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,

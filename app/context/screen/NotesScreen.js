@@ -11,7 +11,7 @@ import {
 import { NotesContext } from "../NotesContext";
 
 export default function NotesScreen({ route, navigation }) {
-  const { notes } = useContext(NotesContext);
+  const { notes, deleteNote } = useContext(NotesContext);
   const { category } = route.params;
   const [search, setSearch] = useState("");
   const [asc, setAsc] = useState(true);
@@ -45,7 +45,6 @@ export default function NotesScreen({ route, navigation }) {
         {
           text: "Delete",
           onPress: () => {
-            const { deleteNote } = useContext(NotesContext);
             deleteNote(noteId);
           },
           style: "destructive",

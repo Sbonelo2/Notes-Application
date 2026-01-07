@@ -1,12 +1,12 @@
 import { useContext, useState } from "react";
 import {
-  ActivityIndicator,
-  Alert,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+    ActivityIndicator,
+    Alert,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from "react-native";
 import { AuthContext } from "../AuthContext";
 
@@ -34,7 +34,10 @@ const LoginScreen = ({ navigation }) => {
 
     setLoading(true);
     try {
-      await login(email, password);
+      const success = await login(email, password);
+      if (!success) {
+        Alert.alert("Login Failed", "Invalid email or password");
+      }
     } catch (error) {
       Alert.alert("Login Failed", error.message);
     } finally {

@@ -65,12 +65,8 @@ const ProfileScreen = ({ navigation }) => {
       { text: "Cancel", onPress: () => {} },
       {
         text: "Logout",
-        onPress: async () => {
-          try {
-            await logout();
-          } catch (error) {
-            Alert.alert("Error", "Failed to logout");
-          }
+        onPress: () => {
+          logout();
         },
       },
     ]);
@@ -105,7 +101,7 @@ const ProfileScreen = ({ navigation }) => {
           <View style={styles.infoCard}>
             <Text style={styles.label}>Member Since</Text>
             <Text style={styles.value}>
-              {new Date(user.createdAt).toLocaleDateString()}
+              {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : "Unknown"}
             </Text>
           </View>
 
@@ -224,7 +220,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     marginBottom: 15,
     borderLeftWidth: 4,
-    borderLeftColor: "#007AFF",
+    borderLeftColor: "#fff",
   },
   label: {
     fontSize: 12,
