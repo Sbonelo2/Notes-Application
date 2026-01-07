@@ -1,3 +1,4 @@
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { useContext, useState } from "react";
 import {
     Alert,
@@ -10,12 +11,15 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
+import { Note } from "../../types";
 import { NotesContext } from "../NotesContext";
 
-export default function AddEditNoteScreen({ route, navigation }) {
-  const { addNote, updateNote, deleteNote } = useContext(NotesContext);
-  const note = route.params?.note;
-  const category = route.params?.category;
+export default function AddEditNoteScreen() {
+  const navigation = useNavigation<any>();
+  const route = useRoute<any>();
+  const { addNote, updateNote, deleteNote } = useContext(NotesContext)!;
+  const note = route.params?.note as Note | undefined;
+  const category = route.params?.category as string | undefined;
 
   const [title, setTitle] = useState(note?.title || "");
   const [notes, setNotes] = useState(note?.notes || "");
@@ -33,7 +37,7 @@ export default function AddEditNoteScreen({ route, navigation }) {
         await updateNote(note.id, { title, notes });
         Alert.alert("Success", "Note updated successfully");
       } else {
-        await addNote({ title, notes, category });
+        await addNote({ title, notes, category: category! });
         Alert.alert("Success", "Note created successfully");
       }
       navigation.goBack();
@@ -53,7 +57,7 @@ export default function AddEditNoteScreen({ route, navigation }) {
         {
           text: "Delete",
           onPress: () => {
-            deleteNote(note.id);
+            deleteNote(note!.id);
             navigation.goBack();
           },
           style: "destructive",

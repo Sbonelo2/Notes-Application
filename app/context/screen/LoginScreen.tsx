@@ -8,15 +8,20 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
+import { NavigationProp } from "../../types";
 import { AuthContext } from "../AuthContext";
 
-const LoginScreen = ({ navigation }) => {
+interface LoginScreenProps {
+  navigation: NavigationProp<'Login'>;
+}
+
+const LoginScreen = ({ navigation }: LoginScreenProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const { login } = useContext(AuthContext);
+  const { login } = useContext(AuthContext)!;
 
-  const validateEmail = (email) => {
+  const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
@@ -39,7 +44,7 @@ const LoginScreen = ({ navigation }) => {
         Alert.alert("Login Failed", "Invalid email or password");
       }
     } catch (error) {
-      Alert.alert("Login Failed", error.message);
+      Alert.alert("Login Failed", (error as Error).message);
     } finally {
       setLoading(false);
     }

@@ -1,17 +1,18 @@
 import { createContext, useEffect, useState } from "react";
+import { AuthContextType, User } from "../types";
 import { getData, removeData, saveData } from "./utils/storage";
 
-export const AuthContext = createContext();
+export const AuthContext = createContext<AuthContextType | null>(null);
 
-export default function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+export default function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    getData("user").then(setUser);
+    getData<User>("user").then(setUser);
   }, []);
 
-  const register = async (email, username, password) => {
-    const newUser = {
+  const register = async (email: string, username: string, password: string) => {
+    const newUser: User = {
       email,
       username,
       password,
@@ -21,8 +22,8 @@ export default function AuthProvider({ children }) {
     setUser(newUser);
   };
 
-  const login = async (email, password) => {
-    const storedUser = await getData("user");
+  const login = async (email: string, password: string): Promise<boolean> => {
+    const storedUser = await getData<User>("user");
     if (storedUser?.email === email && storedUser?.password === password) {
       setUser(storedUser);
       return true;
@@ -35,8 +36,10 @@ export default function AuthProvider({ children }) {
     setUser(null);
   };
 
-  const updateProfile = async (email, username, password) => {
-    const updatedUser = {
+  const updateProfile = async (email: string, username: string, password?: string | null) => {
+    if (!user) return;
+    
+    const updatedUser: User = {
       ...user,
       email,
       username,

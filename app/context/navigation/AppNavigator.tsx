@@ -13,7 +13,7 @@ import RegisterScreen from "../screen/RegisterScreen";
 const Stack = createNativeStackNavigator();
 
 export default function AppNavigator() {
-  const { user } = useContext(AuthContext);
+  const { user } = useContext(AuthContext)!;
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>

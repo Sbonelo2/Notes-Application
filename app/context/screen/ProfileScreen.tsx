@@ -1,18 +1,20 @@
+import { useNavigation } from "@react-navigation/native";
 import { useContext, useState } from "react";
 import {
-  ActivityIndicator,
-  Alert,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+    ActivityIndicator,
+    Alert,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from "react-native";
 import { AuthContext } from "../AuthContext";
 
-const ProfileScreen = ({ navigation }) => {
-  const { user, logout, updateProfile } = useContext(AuthContext);
+export default function ProfileScreen() {
+  const navigation = useNavigation<any>();
+  const { user, logout, updateProfile } = useContext(AuthContext)!;
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState(user?.email || "");
@@ -20,7 +22,7 @@ const ProfileScreen = ({ navigation }) => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const validateEmail = (email) => {
+  const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
@@ -54,7 +56,7 @@ const ProfileScreen = ({ navigation }) => {
       setNewPassword("");
       setConfirmPassword("");
     } catch (error) {
-      Alert.alert("Error", error.message);
+      Alert.alert("Error", (error as Error).message);
     } finally {
       setLoading(false);
     }
@@ -188,7 +190,7 @@ const ProfileScreen = ({ navigation }) => {
       </TouchableOpacity>
     </ScrollView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -297,5 +299,3 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 });
-
-export default ProfileScreen;

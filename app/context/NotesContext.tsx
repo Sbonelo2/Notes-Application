@@ -1,34 +1,35 @@
 import { createContext, useEffect, useState } from "react";
 import uuid from "react-native-uuid";
+import { Note, NotesContextType } from "../types";
 import { getData, saveData } from "./utils/storage";
 
-export const NotesContext = createContext();
+export const NotesContext = createContext<NotesContextType | null>(null);
 
-export default function NotesProvider({ children }) {
-  const [notes, setNotes] = useState([]);
+export default function NotesProvider({ children }: { children: React.ReactNode }) {
+  const [notes, setNotes] = useState<Note[]>([]);
 
   useEffect(() => {
-    getData("notes").then((data) => data && setNotes(data));
+    getData<Note[]>("notes").then((data) => data && setNotes(data));
   }, []);
 
-  const persist = (data) => {
+  const persist = (data: Note[]) => {
     setNotes(data);
     saveData("notes", data);
   };
 
-  const addNote = (note) => {
+  const addNote = (note: Omit<Note, 'id' | 'createdAt' | 'updatedAt'>) => {
     persist([
       ...notes,
       {
         id: uuid.v4(),
         ...note,
         createdAt: new Date().toISOString(),
-        updatedAt: null,
+        updatedAt: undefined,
       },
     ]);
   };
 
-  const updateNote = (id, updatedNote) => {
+  const updateNote = (id: string, updatedNote: Partial<Pick<Note, 'title' | 'notes'>>) => {
     persist(
       notes.map((n) =>
         n.id === id
@@ -38,7 +39,7 @@ export default function NotesProvider({ children }) {
     );
   };
 
-  const deleteNote = (id) => {
+  const deleteNote = (id: string) => {
     persist(notes.filter((n) => n.id !== id));
   };
 

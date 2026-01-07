@@ -1,34 +1,39 @@
 import { useContext, useState } from "react";
 import {
-  ActivityIndicator,
-  Alert,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+    ActivityIndicator,
+    Alert,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from "react-native";
+import { NavigationProp } from "../../types";
 import { AuthContext } from "../AuthContext";
 
-const RegisterScreen = ({ navigation }) => {
+interface RegisterScreenProps {
+  navigation: NavigationProp<'Register'>;
+}
+
+const RegisterScreen = ({ navigation }: RegisterScreenProps) => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const { register } = useContext(AuthContext);
+  const { register } = useContext(AuthContext)!;
 
-  const validateEmail = (email) => {
+  const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  const validateUsername = (username) => {
+  const validateUsername = (username: string) => {
     return username.length >= 3;
   };
 
-  const validatePassword = (password) => {
+  const validatePassword = (password: string) => {
     return password.length >= 6;
   };
 
@@ -63,7 +68,7 @@ const RegisterScreen = ({ navigation }) => {
       await register(email, username, password);
       Alert.alert("Success", "Account created successfully");
     } catch (error) {
-      Alert.alert("Registration Failed", error.message);
+      Alert.alert("Registration Failed", (error as Error).message);
     } finally {
       setLoading(false);
     }

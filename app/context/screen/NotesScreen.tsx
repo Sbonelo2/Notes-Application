@@ -1,3 +1,4 @@
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { useContext, useState } from "react";
 import {
     Alert,
@@ -8,35 +9,38 @@ import {
     TouchableOpacity,
     View
 } from "react-native";
+import { Note } from "../../types";
 import { NotesContext } from "../NotesContext";
 
-export default function NotesScreen({ route, navigation }) {
-  const { notes, deleteNote } = useContext(NotesContext);
+export default function NotesScreen() {
+  const navigation = useNavigation<any>();
+  const route = useRoute<any>();
+  const { notes, deleteNote } = useContext(NotesContext)!;
   const { category } = route.params;
   const [search, setSearch] = useState("");
   const [asc, setAsc] = useState(true);
 
   const filtered = notes
-    .filter((n) => n.category === category)
-    .filter((n) => {
+    .filter((n: Note) => n.category === category)
+    .filter((n: Note) => {
       const searchLower = search.toLowerCase();
       return (
         n.notes.toLowerCase().includes(searchLower) ||
         (n.title && n.title.toLowerCase().includes(searchLower))
       );
     })
-    .sort((a, b) =>
+    .sort((a: Note, b: Note) =>
       asc
-        ? new Date(a.createdAt) - new Date(b.createdAt)
-        : new Date(b.createdAt) - new Date(a.createdAt)
+        ? new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        : new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString() + " " + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
-  const handleDeleteNote = (noteId) => {
+  const handleDeleteNote = (noteId: string) => {
     Alert.alert(
       "Delete Note",
       "Are you sure you want to delete this note?",
@@ -53,7 +57,7 @@ export default function NotesScreen({ route, navigation }) {
     );
   };
 
-  const renderNote = ({ item }) => (
+  const renderNote = ({ item }: { item: Note }) => (
     <TouchableOpacity
       style={styles.noteCard}
       onPress={() => navigation.navigate("AddEditNote", { note: item })}
@@ -125,7 +129,7 @@ export default function NotesScreen({ route, navigation }) {
       <FlatList
         data={filtered}
         renderItem={renderNote}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item: Note) => item.id}
         contentContainerStyle={styles.notesList}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={

@@ -1,16 +1,21 @@
+import { useNavigation } from "@react-navigation/native";
 import { useContext } from "react";
 import {
-  Alert,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+    Alert,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from "react-native";
 import { AuthContext } from "../AuthContext";
 
-export default function CategoriesScreen({ navigation }) {
-  const { user, logout } = useContext(AuthContext);
+interface CategoriesScreenProps {
+}
+
+export default function CategoriesScreen() {
+  const navigation = useNavigation<any>();
+  const { user, logout } = useContext(AuthContext)!;
   const categories = [
     { name: "Work", icon: "💼", color: "#007AFF" },
     { name: "Study", icon: "📚", color: "#34C759" },
